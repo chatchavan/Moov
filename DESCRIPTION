@@ -1,6 +1,6 @@
-Package: MoovSwim
+Package: Moov
 Type: Package
-Title: Moov Swimming Data Toolkit
+Title: Moov Data Toolkit
 Version: 0.1.0
 Author: Chat Wacharamanotham
 Maintainer: Chat Wacharamanotham <chat@acm.org>
@@ -17,7 +17,12 @@ Imports:
     magrittr,
     jsonlite,
     readr,
-    utils
+    utils,
+    DBI,
+    cowplot,
+    RSQLite
 Suggests:
-    cowplot
+    knitr,
+    rmarkdown
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr

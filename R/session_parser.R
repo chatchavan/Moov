@@ -1,4 +1,4 @@
-#' @title Load the MOOV sensor data.
+#' @title Load the MOOV sensor data from a swimming session
 #'
 #' @description
 #' Find the "swimming_result.pb" for the given session \code{id}. Load and
@@ -33,9 +33,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' load_moov_bin("swimming-a2tj48knt09_f0pkqin8vnt", "data/swimming")
+#' read_moov_swim_bin("swimming-a2tj48knt09_f0pkqin8vnt", "data/swimming")
 #' }
-load_moov_bin <- function(id, swimming_root) {
+read_moov_swim_bin <- function(id, swimming_root) {
   # headers
   header_old <- c(9L, 0L, 0L, 0L, 4352L, -1L, -19280L, -952L, 16643L, 410L)
   # TODO: Create a binary parser for the newer files (BINARY: 0108 0C10 6018 0320 0A2A)
@@ -46,8 +46,9 @@ load_moov_bin <- function(id, swimming_root) {
 
   # read binary data
   finfo <- file.info(f_path)
-  toread <- file(f_path, "rb")
-  alldata <- readBin(toread, integer(), size = 2, n = finfo$size, endian = "little")
+  file_con <- file(f_path, "rb")
+  alldata <- readBin(file_con, integer(), size = 2, n = finfo$size, endian = "little")
+  close(file_con)
 
   # extract only data
   data_begin <- max(match(header_old, alldata)) + 1
@@ -59,9 +60,9 @@ load_moov_bin <- function(id, swimming_root) {
 }
 
 
-#' @title Plot sensor data in a given index range
+#' @title Plot swimming sensor data in a given index range
 #'
-#' @param data A tibble containing sensor data @seealso \code{\link{load_moov_bin}}
+#' @param data A tibble containing sensor data @seealso \code{\link{read_moov_swim_bin}}
 #' @param from,to An integer of the range of the indices to plot. If missing,
 #'    plot from the beginning to the end of the data.
 #'
@@ -70,52 +71,10 @@ load_moov_bin <- function(id, swimming_root) {
 #' @import ggplot2
 #' @export
 #'
-plot_sensor <- function(data, from = NA, to = NA) {
+plot_sensor_swim <- function(data, from = NA, to = NA) {
   if (missing(from)) from <- 1
   if (missing(to)) to <- nrow(data)
   data[from:to,] %>%
     ggplot(aes(x = x, y = y)) +
     geom_line()
-}
-
-
-#===============================================================================
-
-function() {
-
-# Chat's scratchpad
-
-# session: swimming-k5y5pqbib17vbjqrh9gr16e
-# swim duration: 2554 sec
-# length of data: 25033
-
-library(tidyverse)
-import::from(cowplot, "plot_grid")
-
-ids <- c(
-  "swimming-k5y5pqbib17vbjqrh9gr16e",
-  "swimming-qecwn0axccqirx3w_gwpsqp",
-  "swimming-9bcup6f82rtf19kcpaefiw6",
-  "swimming-c4g4pyy8wm6ycw7tmpms_hx",
-  "swimming-usq_21zwinkmd4jhtn72ue5",
-  "swimming-a2tj48knt09_f0pkqin8vnt"
-)
-
-swimming_root <- "../02 Dump from MOOV backup/Applications/moov.core/Library/Application Support/user_data/6234565289443328/swimming/"
-
-data1 <- load_moov_bin(ids[1], swimming_root)
-data2 <- load_moov_bin(ids[2], swimming_root)
-data3 <- load_moov_bin(ids[3], swimming_root)
-data4 <- load_moov_bin(ids[4], swimming_root)
-data5 <- load_moov_bin(ids[5], swimming_root)
-data6 <- load_moov_bin(ids[6], swimming_root)
-
-plot_grid(
-  plot_sensor(data1) + xlim(1, 70000),
-  plot_sensor(data2) + xlim(1, 70000),
-  plot_sensor(data3) + xlim(1, 70000),
-  plot_sensor(data4) + xlim(1, 70000),
-  plot_sensor(data5) + xlim(1, 70000),
-  plot_sensor(data6) + xlim(1, 70000),
-  nrow = 6)
 }

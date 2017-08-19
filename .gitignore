@@ -6,6 +6,8 @@
 .Rhistory
 .RData
 *.nb.html
-
-# For local test folder
-test/*
+inst/doc
+# produced vignettes
+vignettes/*.html
+# private files
+private/
