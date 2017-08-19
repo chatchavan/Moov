@@ -22,25 +22,7 @@ devtools::install_github("chatchavan/Moov")
 library(Moov)
 ```
 
-Plot a summary of your swimming sessions.
-
-```r
-import::from(cowplot, "plot_grid")
-swimming <- parse_swimming(read_moov("user.db"))
-plot_grid(
-  plot_swim_summary(swimming, "distance_per_stroke") + geom_smooth(method="loess"),
-  plot_swim_summary(swimming, "stroke_rate", ylim = NULL) + geom_smooth(method="loess"),
-  plot_swim_summary(swimming, "distance_m", ylim = NULL),
-  ncol = 1
-)
-```
-
-Plot the raw sensor data from a specific session
-
-```r
-read_moov_swim_bin("swimming-a2tj48knt09_f0pkqin8vnt", "data/swimming")
-plot_sensor_swim(data)
-```
+See an example [here](https://chatchavan.github.io/Moov/read_and_plot.html)
 
 ## Structure of Moov data
 
