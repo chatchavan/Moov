@@ -22,7 +22,7 @@ devtools::install_github("chatchavan/Moov")
 library(Moov)
 ```
 
-See an example [here](https://chatchavan.github.io/Moov/read_and_plot.html)
+See an example [here](https://chatchavan.github.io/Moov/)
 
 ## Structure of Moov data
 
