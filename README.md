@@ -18,7 +18,7 @@ __Android:__ See the instruction in [Marin's code](https://github.com/hoffoo/moo
 Install and load the package:
 
 ```r
-devtools::install_github("chatchavan/MoovSwim")
+devtools::install_github("chatchavan/Moov")
 library(Moov)
 ```
 
